@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2018-12-13
  */
 @Repository
-public interface VisitsRepository extends JpaRepository<Visits,Long> {
+public interface VisitsRepository  extends JpaRepository<Visits,Long> {
 
     /**
      * findByDate
