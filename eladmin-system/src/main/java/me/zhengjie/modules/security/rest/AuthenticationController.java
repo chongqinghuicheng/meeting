@@ -64,6 +64,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(new AuthenticationInfo(token,jwtUser));
     }
 
+
     /**
      * 获取用户信息
      * @return
