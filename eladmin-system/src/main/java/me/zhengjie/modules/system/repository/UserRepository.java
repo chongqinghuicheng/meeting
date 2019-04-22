@@ -51,7 +51,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     @Query(value = "update user set avatar = ?2 where username = ?1",nativeQuery = true)
     void updateAvatar(String username, String url);
 
-
     /**
      * 修改邮箱
      * @param username
