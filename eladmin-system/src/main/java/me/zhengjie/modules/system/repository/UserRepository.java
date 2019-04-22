@@ -41,6 +41,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     void updatePass(String username, String pass, Date lastPasswordResetTime) ;
 
 
+
+
     /**
      * 修改头像
      * @param username
