@@ -52,6 +52,7 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     void updateAvatar(String username, String url);
 
 
+
     /**
      * 修改邮箱
      * @param username
