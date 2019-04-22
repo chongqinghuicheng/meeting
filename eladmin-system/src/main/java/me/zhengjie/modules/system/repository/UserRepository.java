@@ -42,7 +42,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
 
 
-
     /**
      * 修改头像
      * @param username
