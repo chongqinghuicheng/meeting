@@ -78,6 +78,5 @@ public class User implements Serializable {
                 ", lastPasswordResetTime=" + lastPasswordResetTime +
                 '}';
     }
-
     public @interface Update {}
 }
