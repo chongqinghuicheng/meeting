@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -70,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity
+        HeadersConfigurer<HttpSecurity> disable = httpSecurity
 
                 // 禁用 CSRF
                 .csrf().disable()
@@ -91,8 +92,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
 
-                .antMatchers( HttpMethod.POST,"/auth/"+loginPath).permitAll()
+
+                .antMatchers(HttpMethod.POST, "/auth" + loginPath).permitAll()
                 .antMatchers("/websocket/**").permitAll()
+                //.antMatchers("/api/**").permitAll()
                 // 支付宝回调
                 .antMatchers("/api/aliPay/return").anonymous()
                 .antMatchers("/api/aliPay/notify").anonymous()
