@@ -10,7 +10,7 @@
         </encoder>
 
         <!--添加我们自定义的filter-->
-        <filter class="me.zhengjie.modules.monitor.config.LogFilter"></filter>
+        <filter class="com.cqhc.modules.monitor.config.LogFilter"></filter>
     </appender>
 
     <!--普通日志输出到控制台-->

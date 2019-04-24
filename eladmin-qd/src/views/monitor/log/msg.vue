@@ -30,7 +30,7 @@ export default {
       ico: 'unlock', unlock: true, content: '锁定滚动条',
       height: document.documentElement.clientHeight - 94.5 + 'px;',
       width: document.documentElement.clientWidth - 185 + 'px;',
-      data: [{ name: 'elAdmin-', timestamp: new Date(), threadName: 'system-prompt-message', level: 'INFO', className: 'me.zhengjie.AppRun' + ' :', body: 'Welcome, no log output' }],
+      data: [{ name: 'elAdmin-', timestamp: new Date(), threadName: 'system-prompt-message', level: 'INFO', className: 'com.cqhc.AppRun' + ' :', body: 'Welcome, no log output' }],
       // level
       INFO: '#0000ff', WARN: '#FFFF00', ERROR: '#FF0000', DEBUG: '#DEA000'
     }

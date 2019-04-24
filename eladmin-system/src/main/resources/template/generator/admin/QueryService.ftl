@@ -1,6 +1,6 @@
 package ${package}.service.query;
 
-import me.zhengjie.utils.PageUtil;
+import com.cqhc.utils.PageUtil;
 import ${package}.domain.${className};
 import ${package}.service.dto.${className}DTO;
 import ${package}.repository.${className}Repository;
