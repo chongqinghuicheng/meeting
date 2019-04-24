@@ -1,9 +1,5 @@
 package com.cqhc.modules.system.rest;
 
-import com.cqhc.modules.system.domain.Unit;
-import com.cqhc.modules.system.service.UnitService;
-import com.cqhc.modules.system.service.dto.UnitDTO;
-import com.cqhc.modules.system.service.query.UnitQueryService;
 import com.cqhc.aop.log.Log;
 import com.cqhc.exception.BadRequestException;
 import com.cqhc.modules.system.domain.Unit;
@@ -20,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
 * @author huicheng
-* @date 2019-04-23
+* @date 2019-04-24
 */
 @RestController
 @RequestMapping("api")

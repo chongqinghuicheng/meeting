@@ -6,43 +6,34 @@ import java.io.Serializable;
 
 /**
 * @author huicheng
-* @date 2019-04-23
+* @date 2019-04-24
 */
 @Entity
 @Data
-@Table(name="config")
-public class Config implements Serializable {
+@Table(name="parameter_config")
+public class ParameterConfig implements Serializable {
 
-    /**
-     * ID
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    /**
-     * 名称
-     */
     @Column(name = "name",nullable = false)
     private String name;
 
-    /**
-     * 值
-     */
-    @Column(name = "value")
+    @Column(name = "unit_id",nullable = false)
+    private Long unitId;
+
+    @Column(name = "value",nullable = false)
     private String value;
 
     /**
-     * 描述
+     * 0-平台级
+            1-单位级
      */
+    @Column(name = "type",nullable = false)
+    private Integer type;
+
     @Column(name = "remark")
     private String remark;
-
-    /**
-     * 单位ID
-     */
-    @Column(name = "unit_id")
-    private Unit unit;
-
 }

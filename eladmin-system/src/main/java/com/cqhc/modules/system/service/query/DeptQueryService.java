@@ -4,8 +4,6 @@ import com.cqhc.modules.system.repository.DeptRepository;
 import com.cqhc.modules.system.service.mapper.DeptMapper;
 import com.cqhc.modules.system.domain.Dept;
 import com.cqhc.modules.system.service.dto.DeptDTO;
-import com.cqhc.modules.system.repository.DeptRepository;
-import com.cqhc.modules.system.service.mapper.DeptMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;

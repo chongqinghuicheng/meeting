@@ -1,17 +1,17 @@
 package com.cqhc.modules.system.service;
 
-import com.cqhc.modules.system.domain.Config;
-import com.cqhc.modules.system.service.dto.ConfigDTO;
+import com.cqhc.modules.system.domain.MeetingInfo;
+import com.cqhc.modules.system.service.dto.MeetingInfoDTO;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
 /**
 * @author huicheng
-* @date 2019-04-23
+* @date 2019-04-24
 */
-@CacheConfig(cacheNames = "config")
-public interface ConfigService {
+@CacheConfig(cacheNames = "meetingInfo")
+public interface MeetingInfoService {
 
     /**
      * findById
@@ -19,7 +19,7 @@ public interface ConfigService {
      * @return
      */
     @Cacheable(key = "#p0")
-    ConfigDTO findById(Long id);
+    MeetingInfoDTO findById(Long id);
 
     /**
      * create
@@ -27,14 +27,14 @@ public interface ConfigService {
      * @return
      */
     @CacheEvict(allEntries = true)
-    ConfigDTO create(Config resources);
+    MeetingInfoDTO create(MeetingInfo resources);
 
     /**
      * update
      * @param resources
      */
     @CacheEvict(allEntries = true)
-    void update(Config resources);
+    void update(MeetingInfo resources);
 
     /**
      * delete

@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
 * @author huicheng
-* @date 2019-04-23
+* @date 2019-04-24
 */
 @Entity
 @Data

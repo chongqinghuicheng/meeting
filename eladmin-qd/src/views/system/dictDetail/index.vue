@@ -1,48 +1,65 @@
 <template>
-  <div>
-    <div v-if="dictName === ''">
-      <div class="my-code">点击字典查看详情</div>
-    </div>
-    <div v-else>
-      <eHeader ref="header" :query="query" :dict-id="dictId"/>
-      <!--表格渲染-->
-      <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
-        <el-table-column prop="label" label="字典标签"/>
-        <el-table-column prop="value" label="字典值"/>
-        <el-table-column prop="sort" label="排序"/>
-        <el-table-column label="操作" width="150px" align="center">
-          <template slot-scope="scope">
-            <edit v-if="checkPermission(['ADMIN','DICT_ALL','DICT_EDIT'])" :dict-id="dictId" :data="scope.row" :sup_this="sup_this"/>
-            <el-popover
-              v-if="checkPermission(['ADMIN','DICT_ALL','DICT_DELETE'])"
-              :ref="scope.row.id"
-              placement="top"
-              width="180">
-              <p>确定删除本条数据吗？</p>
-              <div style="text-align: right; margin: 0">
-                <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
-                <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
-              </div>
-              <el-button slot="reference" type="danger" size="mini">删除</el-button>
-            </el-popover>
-          </template>
-        </el-table-column>
-      </el-table>
-      <!--分页组件-->
-      <el-pagination
-        :total="total"
-        style="margin-top: 8px;"
-        layout="total, prev, pager, next, sizes"
-        @size-change="sizeChange"
-        @current-change="pageChange"/>
-    </div>
+  <div class="app-container">
+    <eHeader :query="query"/>
+    <!--表格渲染-->
+    <el-table v-loading="loading" :data="data" size="small" style="width: 100%;">
+      <el-table-column prop="areaCode" label="areaCode"/>
+      <el-table-column prop="name" label="name"/>
+      <el-table-column prop="address" label="address"/>
+      <el-table-column prop="workTel" label="workTel"/>
+      <el-table-column prop="principal" label="principal"/>
+      <el-table-column prop="principalPosition" label="principalPosition"/>
+      <el-table-column prop="principalPhone" label="principalPhone"/>
+      <el-table-column prop="contact" label="contact"/>
+      <el-table-column prop="contactPosition" label="contactPosition"/>
+      <el-table-column prop="contactPhone" label="contactPhone"/>
+      <el-table-column prop="version" label="数据字典version_number
+            0-基础版
+            1-标准版
+            2-党委版
+            3-政府版
+            4-人大版
+            5-政协版
+            6-部门版
+            7-企业版
+            9-其他
+            "/>
+      <el-table-column prop="terminalNum" label="terminalNum"/>
+      <el-table-column prop="enabled" label="数据字典dept_status
+            true正常
+            false停用"/>
+      <el-table-column label="操作" width="150px" align="center">
+        <template slot-scope="scope">
+          <edit v-if="checkPermission(['ADMIN'])" :data="scope.row" :sup_this="sup_this"/>
+          <el-popover
+            v-if="checkPermission(['ADMIN'])"
+            :ref="scope.row.id"
+            placement="top"
+            width="180">
+            <p>确定删除本条数据吗？</p>
+            <div style="text-align: right; margin: 0">
+              <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
+              <el-button :loading="delLoading" type="primary" size="mini" @click="subDelete(scope.row.id)">确定</el-button>
+            </div>
+            <el-button slot="reference" type="danger" size="mini">删除</el-button>
+          </el-popover>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!--分页组件-->
+    <el-pagination
+      :total="total"
+      style="margin-top: 8px;"
+      layout="total, prev, pager, next, sizes"
+      @size-change="sizeChange"
+      @current-change="pageChange"/>
   </div>
 </template>
 
 <script>
 import checkPermission from '@/utils/permission'
 import initData from '@/mixins/initData'
-import { del } from '@/api/dictDetail'
+import { del } from '@/api/unit'
 import eHeader from './module/header'
 import edit from './module/edit'
 export default {
@@ -50,20 +67,24 @@ export default {
   mixins: [initData],
   data() {
     return {
-      delLoading: false, sup_this: this, dictName: '', dictId: 0
+      delLoading: false, sup_this: this
     }
   },
   created() {
-    this.loading = false
+    this.$nextTick(() => {
+      this.init()
+    })
   },
   methods: {
     checkPermission,
     beforeInit() {
-      this.url = 'api/dictDetail'
-      this.params = { page: this.page, size: this.size, dictName: this.dictName }
+      this.url = 'api/unit'
+      const sort = 'id,desc'
+      this.params = { page: this.page, size: this.size, sort: sort }
       const query = this.query
+      const type = query.type
       const value = query.value
-      if (value) { this.params['label'] = value }
+      if (type && value) { this.params[type] = value }
       return true
     },
     subDelete(id) {
@@ -88,12 +109,5 @@ export default {
 </script>
 
 <style scoped>
-  .my-code{
-    padding: 15px;
-    line-height: 20px;
-    border-left: 3px solid #ddd;
-    color: #333;
-    font-family: Courier New;
-    font-size: 12px
-  }
+
 </style>

@@ -1,7 +1,5 @@
 package com.cqhc.modules.system.service.impl;
 
-import com.cqhc.modules.system.repository.UnitRepository;
-import com.cqhc.modules.system.service.mapper.UnitMapper;
 import com.cqhc.modules.system.domain.Unit;
 import com.cqhc.utils.ValidationUtil;
 import com.cqhc.modules.system.repository.UnitRepository;
@@ -16,7 +14,7 @@ import java.util.Optional;
 
 /**
 * @author huicheng
-* @date 2019-04-23
+* @date 2019-04-24
 */
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)

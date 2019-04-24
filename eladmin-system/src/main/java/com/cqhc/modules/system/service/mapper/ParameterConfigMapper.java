@@ -1,8 +1,8 @@
 package com.cqhc.modules.system.service.mapper;
 
 import com.cqhc.mapper.EntityMapper;
-import com.cqhc.modules.system.domain.Unit;
-import com.cqhc.modules.system.service.dto.UnitDTO;
+import com.cqhc.modules.system.domain.ParameterConfig;
+import com.cqhc.modules.system.service.dto.ParameterConfigDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -11,6 +11,6 @@ import org.mapstruct.ReportingPolicy;
 * @date 2019-04-24
 */
 @Mapper(componentModel = "spring",uses = {},unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface UnitMapper extends EntityMapper<UnitDTO, Unit> {
+public interface ParameterConfigMapper extends EntityMapper<ParameterConfigDTO, ParameterConfig> {
 
 }
