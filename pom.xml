@@ -5,19 +5,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.cqhc</groupId>
-    <artifactId>eladmin</artifactId>
+    <artifactId>cqhc</artifactId>
     <packaging>pom</packaging>
     <version>1.5</version>
 
     <modules>
-        <module>eladmin-common</module>
-        <module>eladmin-logging</module>
-        <module>eladmin-system</module>
-        <module>eladmin-tools</module>
-        <module>eladmin-generator</module>
+        <module>cqhc-common</module>
+        <module>cqhc-logging</module>
+        <module>cqhc-system</module>
+        <module>cqhc-tools</module>
+        <module>cqhc-generator</module>
     </modules>
 
-    <name>el-admin</name>
+    <name>cqhc</name>
     <url>http://auauz.net</url>
 
     <parent>
