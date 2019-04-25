@@ -6,6 +6,7 @@ import com.cqhc.domain.Picture;
 import com.cqhc.domain.VerificationCode;
 import com.cqhc.exception.BadRequestException;
 import com.cqhc.modules.system.domain.User;
+import com.cqhc.modules.system.repository.UserRepository;
 import com.cqhc.modules.system.service.DeptService;
 import com.cqhc.modules.system.service.UserService;
 import com.cqhc.modules.system.service.dto.UserDTO;
@@ -16,6 +17,9 @@ import com.cqhc.utils.ElAdminConstant;
 import com.cqhc.utils.EncryptUtils;
 import com.cqhc.utils.PageUtil;
 import com.cqhc.utils.SecurityContextHolder;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -39,6 +43,7 @@ import java.util.Set;
  */
 @RestController
 @RequestMapping("api")
+@Api(value = "/用户管理", description = "用户管理")
 public class UserController {
 
     @Autowired
@@ -59,11 +64,14 @@ public class UserController {
     @Autowired
     private VerificationCodeService verificationCodeService;
 
+    @Autowired
+    private UserRepository userRepository;
 
     private static final String ENTITY_NAME = "user";
 
     @Log("查询用户")
     @GetMapping(value = "/users")
+    @ApiOperation(value = "用户查询")
     @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT')")
     public ResponseEntity getUsers(UserDTO userDTO, Pageable pageable){
         Set<Long> deptSet = new HashSet<>();
@@ -118,8 +126,13 @@ public class UserController {
     @DeleteMapping(value = "/users/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_DELETE')")
     public ResponseEntity delete(@PathVariable Long id){
-        userService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        long count = userRepository.findByIdAndSource(id);
+        if(count > 0){
+            throw new BadRequestException("该用户为系统初始化，不能删！");
+        }else {
+            userService.delete(id);
+            return new ResponseEntity(HttpStatus.OK);
+        }
     }
 
     /**
@@ -128,6 +141,8 @@ public class UserController {
      * @return
      */
     @GetMapping(value = "/users/validPass/{pass}")
+    @ApiOperation(value = "验证密码",notes = "根据密码验证密码")
+    @ApiImplicitParam(name = "pass", value = "用户密码", required = true, dataType = "String")
     public ResponseEntity validPass(@PathVariable String pass){
         UserDetails userDetails = SecurityContextHolder.getUserDetails();
         Map map = new HashMap();

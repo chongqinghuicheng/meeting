@@ -32,6 +32,9 @@ public class User implements Serializable {
     @Column(unique = true)
     private String username;
 
+    @Column(name = "source",nullable = false)
+    private short source;
+
     private String avatar;
 
     @NotBlank
@@ -77,6 +80,7 @@ public class User implements Serializable {
                 ", job='" + job + '\'' +
                 ", dept='" + dept + '\'' +
                 ", unit='" + unit + '\'' +
+                ", source=" + source + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", email='" + email + '\'' +
                 ", enabled=" + enabled +

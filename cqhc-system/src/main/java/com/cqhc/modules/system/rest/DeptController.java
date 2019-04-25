@@ -1,8 +1,5 @@
 package com.cqhc.modules.system.rest;
 
-import com.cqhc.modules.system.service.DeptService;
-import com.cqhc.modules.system.service.dto.DeptDTO;
-import com.cqhc.modules.system.service.query.DeptQueryService;
 import com.cqhc.aop.log.Log;
 import com.cqhc.config.DataScope;
 import com.cqhc.exception.BadRequestException;
@@ -37,6 +34,13 @@ public class DeptController {
     private DataScope dataScope;
 
     private static final String ENTITY_NAME = "dept";
+
+    /**
+     *
+     *
+     * @param resources
+     * @return
+     */
 
     @Log("查询部门")
     @GetMapping(value = "/dept")
