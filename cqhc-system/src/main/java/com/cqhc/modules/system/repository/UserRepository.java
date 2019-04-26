@@ -56,12 +56,12 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     void updateEmail(String username, String email);
 
     /**
-     * 查询是否为0
+     * 查询用户是否为系统初始化
      *
      * @param id
      * @return
      */
-
     @Query(value = "select count(*) from user where id = ?1 and source = 0",nativeQuery = true)
     Long findByIdAndSource(Long id);
+
 }

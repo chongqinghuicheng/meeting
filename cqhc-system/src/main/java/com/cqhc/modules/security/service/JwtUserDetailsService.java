@@ -1,10 +1,10 @@
 package com.cqhc.modules.security.service;
 
-import com.cqhc.modules.security.security.JwtUser;
 import com.cqhc.exception.EntityNotFoundException;
 import com.cqhc.modules.security.security.JwtUser;
 import com.cqhc.modules.system.domain.Dept;
 import com.cqhc.modules.system.domain.Job;
+import com.cqhc.modules.system.domain.Unit;
 import com.cqhc.modules.system.domain.User;
 import com.cqhc.modules.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +46,14 @@ public class JwtUserDetailsService implements UserDetailsService {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
+                user.getSource(),
                 user.getAvatar(),
                 user.getEmail(),
                 user.getPhone(),
                 Optional.ofNullable(user.getDept()).map(Dept::getName).orElse(null),
                 Optional.ofNullable(user.getJob()).map(Job::getName).orElse(null),
+                Optional.ofNullable(user.getUnit()).map(Unit::getName).orElse(null),
+                Optional.ofNullable(user.getUnit()).map(Unit::getId).orElse(null),
                 permissionService.mapToGrantedAuthorities(user),
                 user.getEnabled(),
                 user.getCreateTime(),
