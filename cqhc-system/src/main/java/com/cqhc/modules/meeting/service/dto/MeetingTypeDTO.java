@@ -1,5 +1,6 @@
 package com.cqhc.modules.meeting.service.dto;
 
+import com.cqhc.modules.system.service.dto.UnitDTO;
 import lombok.Data;
 import java.io.Serializable;
 
@@ -16,7 +17,7 @@ public class MeetingTypeDTO implements Serializable {
 
     private String name;
 
-    private Long unitId;
+    private UnitDTO unit;
 
     /**
      * 数据字典meeting_type_status
@@ -26,4 +27,5 @@ public class MeetingTypeDTO implements Serializable {
     private Boolean enabled;
 
     private String remark;
+
 }

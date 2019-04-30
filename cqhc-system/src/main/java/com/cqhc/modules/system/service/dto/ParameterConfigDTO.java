@@ -14,13 +14,13 @@ public class ParameterConfigDTO implements Serializable {
 
     private String name;
 
-    private Long unitId;
+    private UnitDTO unit;
 
     private String value;
 
     /**
      * 0-平台级
-            1-单位级
+      1-单位级
      */
     private Integer type;
 

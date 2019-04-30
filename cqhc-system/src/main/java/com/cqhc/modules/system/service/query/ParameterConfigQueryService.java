@@ -1,5 +1,7 @@
 package com.cqhc.modules.system.service.query;
 
+import com.cqhc.modules.meeting.domain.MeetingType;
+import com.cqhc.modules.system.domain.Unit;
 import com.cqhc.utils.PageUtil;
 import com.cqhc.modules.system.domain.ParameterConfig;
 import com.cqhc.modules.system.service.dto.ParameterConfigDTO;
@@ -15,10 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +36,7 @@ public class ParameterConfigQueryService {
 
     @Autowired
     private ParameterConfigMapper parameterConfigMapper;
+
 
     /**
      * 分页
@@ -69,22 +70,30 @@ public class ParameterConfigQueryService {
 
             if(!ObjectUtils.isEmpty(parameterConfig.getName())){
                 /**
-                * 模糊
+                * 模糊.参数名
                 */
                 list.add(cb.like(root.get("name").as(String.class),"%"+parameterConfig.getName()+"%"));
             }
             if(!ObjectUtils.isEmpty(parameterConfig.getType())){
                 /**
-                * 精确
+                * 精确.类型
                 */
                 list.add(cb.equal(root.get("type").as(Integer.class),parameterConfig.getType()));
             }
             if(!ObjectUtils.isEmpty(parameterConfig.getRemark())){
                 /**
-                * 模糊
+                * 模糊.描述
                 */
                 list.add(cb.like(root.get("remark").as(String.class),"%"+parameterConfig.getRemark()+"%"));
             }
+            if (!ObjectUtils.isEmpty(parameterConfig.getUnit().getName())){
+                /**
+                 * 模糊.单位名称
+                 */
+                Join<Unit, ParameterConfig> join = root.join("grade", JoinType.LEFT);
+                list.add(cb.like(join.get("unit").get("unitName").as(String.class), "%" +parameterConfig.getUnit().getName() + "%"));
+            }
+
                 Predicate[] p = new Predicate[list.size()];
                 return cb.and(list.toArray(p));
         }
