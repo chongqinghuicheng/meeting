@@ -1,5 +1,6 @@
 package com.cqhc.modules.system.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,25 +27,29 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull(groups = Update.class)
+    @ApiModelProperty(notes = "用户id", required = true)
     private Long id;
 
     @NotBlank
     @Column(unique = true)
+    @ApiModelProperty(notes = "用户名称", required = true)
     private String username;
 
-    @Column(name = "source",nullable = false)
+    @ApiModelProperty(notes = "数据来源", required = false)
     private short source;
 
+    @ApiModelProperty(notes = "头像地址", required = false)
     private String avatar;
 
     @NotBlank
     @Pattern(regexp = "([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}",message = "格式错误")
+    @ApiModelProperty(notes = "邮箱", required = true)
     private String email;
 
-    @NotBlank
     private String phone;
 
     @NotNull
+    @ApiModelProperty(notes = "状态", required = true)
     private Boolean enabled;
 
     private String password;
@@ -77,10 +82,6 @@ public class User implements Serializable {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", job='" + job + '\'' +
-                ", dept='" + dept + '\'' +
-                ", unit='" + unit + '\'' +
-                ", source=" + source + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", email='" + email + '\'' +
                 ", enabled=" + enabled +

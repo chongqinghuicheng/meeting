@@ -13,6 +13,8 @@ public class ElAdminConstant {
 
     public static final String LOGIN_COUNT = "LOGIN_COUNT";
 
+    public static final String IP = "IP";
+
     public static final int LOGIN_FAIL_COUNT = 5;
 
     /**

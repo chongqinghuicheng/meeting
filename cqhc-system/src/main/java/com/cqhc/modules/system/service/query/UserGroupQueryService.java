@@ -1,20 +1,18 @@
 package com.cqhc.modules.system.service.query;
 
-import com.cqhc.utils.PageUtil;
 import com.cqhc.modules.system.domain.UserGroup;
-import com.cqhc.modules.system.service.dto.UserGroupDTO;
 import com.cqhc.modules.system.repository.UserGroupRepository;
+import com.cqhc.modules.system.service.dto.UserGroupDTO;
 import com.cqhc.modules.system.service.mapper.UserGroupMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -41,9 +39,9 @@ public class UserGroupQueryService {
      * 分页
      */
     @Cacheable(keyGenerator = "keyGenerator")
-    public Object queryAll(UserGroupDTO userGroup, Pageable pageable){
-        Page<UserGroup> page = userGroupRepository.findAll(new Spec(userGroup),pageable);
-        return PageUtil.toPage(page.map(userGroupMapper::toDto));
+    public Object findBySort(int pageNumber,int pageSize){
+        List<UserGroup> ListBySort = userGroupRepository.findBySort(pageNumber, pageSize);
+        return ListBySort;
     }
 
     /**

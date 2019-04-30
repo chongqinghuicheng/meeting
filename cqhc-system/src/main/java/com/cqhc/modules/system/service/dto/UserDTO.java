@@ -43,8 +43,10 @@ public class UserDTO implements Serializable {
     @ApiModelProperty(hidden = true)
     private JobDTO job;
 
+    @ApiModelProperty(hidden = true)
     private DeptDTO dept;
 
+    @ApiModelProperty(hidden = true)
     private UnitDTO unit;
 
     private Long deptId;

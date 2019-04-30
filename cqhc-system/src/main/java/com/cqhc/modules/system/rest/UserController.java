@@ -77,7 +77,7 @@ public class UserController {
 
     @Log("查询用户")
     @GetMapping(value = "/users")
-    @ApiOperation(value = "用户查询")
+    @ApiOperation(value = "查询用户")
     @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT')")
     public ResponseEntity getUsers(UserDTO userDTO, Pageable pageable){
         Set<Long> deptSet = new HashSet<>();
@@ -112,6 +112,7 @@ public class UserController {
 
     @Log("新增用户")
     @PostMapping(value = "/users")
+    @ApiOperation(value = "新增用户")
     @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_CREATE')")
     public ResponseEntity create(@Validated @RequestBody User resources){
         if (resources.getId() != null) {
@@ -122,6 +123,7 @@ public class UserController {
 
     @Log("修改用户")
     @PutMapping(value = "/users")
+    @ApiOperation(value = "修改用户")
     @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_EDIT')")
     public ResponseEntity update(@Validated(User.Update.class) @RequestBody User resources){
         userService.update(resources);
@@ -130,6 +132,8 @@ public class UserController {
 
     @Log("删除用户")
     @DeleteMapping(value = "/users/{id}")
+    @ApiOperation(value = "删除用户",notes = "根据id删除用户")
+    @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "Long")
     @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_DELETE')")
     public ResponseEntity delete(@PathVariable Long id){
         long count = userRepository.findByIdAndSource(id);
@@ -165,6 +169,8 @@ public class UserController {
      * @return
      */
     @GetMapping(value = "/users/updatePass/{pass}")
+    @ApiOperation(value = "修改密码",notes = "根据原密码修改密码")
+    @ApiImplicitParam(name = "pass", value = "用户密码", required = true, dataType = "String")
     public ResponseEntity updatePass(@PathVariable String pass){
         UserDetails userDetails = SecurityContextHolder.getUserDetails();
         if(userDetails.getPassword().equals(EncryptUtils.encryptPassword(pass))){
@@ -180,6 +186,7 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/users/updateAvatar")
+    @ApiOperation(value = "修改头像")
     public ResponseEntity updateAvatar(@RequestParam MultipartFile file){
         UserDetails userDetails = SecurityContextHolder.getUserDetails();
         Picture picture = pictureService.upload(file,userDetails.getUsername());
@@ -195,6 +202,8 @@ public class UserController {
      */
     @Log("修改邮箱")
     @PostMapping(value = "/users/updateEmail/{code}")
+    @ApiOperation(value = "修改邮箱")
+    @ApiImplicitParam(name = "code", value = "验证码", required = true, dataType = "String")
     public ResponseEntity updateEmail(@PathVariable String code,@RequestBody User user){
         UserDetails userDetails = SecurityContextHolder.getUserDetails();
         if(!userDetails.getPassword().equals(EncryptUtils.encryptPassword(user.getPassword()))){

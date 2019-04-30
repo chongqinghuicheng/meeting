@@ -18,6 +18,7 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -92,6 +93,13 @@ public class RedisConfig extends CachingConfigurerSupport {
         // value值的序列化采用fastJsonRedisSerializer
         template.setValueSerializer(fastJsonRedisSerializer);
         template.setHashValueSerializer(fastJsonRedisSerializer);
+
+        //序列化自增功能
+        template.setConnectionFactory(redisConnectionFactory);
+        GenericToStringSerializer genericToStringSerializer = new GenericToStringSerializer(Object.class);
+        template.setValueSerializer(genericToStringSerializer);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.afterPropertiesSet();
 
         // 全局开启AutoType，不建议使用
         // ParserConfig.getGlobalInstance().setAutoTypeSupport(true);

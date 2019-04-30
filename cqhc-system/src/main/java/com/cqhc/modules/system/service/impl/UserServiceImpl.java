@@ -1,10 +1,8 @@
 package com.cqhc.modules.system.service.impl;
 
-import com.cqhc.modules.system.repository.UserRepository;
-import com.cqhc.modules.system.service.mapper.UserMapper;
-import com.cqhc.modules.system.domain.User;
 import com.cqhc.exception.EntityExistException;
 import com.cqhc.exception.EntityNotFoundException;
+import com.cqhc.modules.system.domain.User;
 import com.cqhc.modules.system.repository.UserRepository;
 import com.cqhc.modules.system.service.UserService;
 import com.cqhc.modules.system.service.dto.UserDTO;
@@ -14,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -82,6 +81,7 @@ public class UserServiceImpl implements UserService {
         user.setDept(resources.getDept());
         user.setJob(resources.getJob());
         user.setPhone(resources.getPhone());
+        user.setUnit(resources.getUnit());
         userRepository.save(user);
     }
 
