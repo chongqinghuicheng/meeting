@@ -2,10 +2,13 @@ package com.cqhc.modules.meeting.rest;
 
 import com.cqhc.aop.log.Log;
 import com.cqhc.exception.BadRequestException;
+import com.cqhc.modules.meeting.domain.MeetingInfo;
 import com.cqhc.modules.meeting.domain.MeetingVote;
+import com.cqhc.modules.meeting.service.MeetingInfoService;
 import com.cqhc.modules.meeting.service.MeetingVoteService;
 import com.cqhc.modules.meeting.service.dto.MeetingVoteDTO;
 import com.cqhc.modules.meeting.service.query.MeetingVoteQueryService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -28,18 +31,34 @@ public class MeetingVoteController {
     @Autowired
     private MeetingVoteQueryService meetingVoteQueryService;
 
+    @Autowired
+    private MeetingInfoService meetingInfoService;
+
     private static final String ENTITY_NAME = "meetingVote";
 
-    @Log("查询MeetingVote")
+    @Log("查询会议投票")
     @GetMapping(value = "/meetingVote")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @ApiOperation(value = "查询会议投票", notes = "可根据标题、状态查询")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_VOTE_ALL', 'MEETING_INFO_SELECT')")
     public ResponseEntity getMeetingVotes(MeetingVoteDTO resources, Pageable pageable){
-        return new ResponseEntity(meetingVoteQueryService.queryAll(resources,pageable),HttpStatus.OK);
+        return new ResponseEntity(meetingVoteQueryService.queryAll(resources, pageable),HttpStatus.OK);
     }
 
-    @Log("新增MeetingVote")
+    /**
+     * 获取本单位待进行或进行中的会议，新增时下拉框
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/meetingVote/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','MEETING_VOTE_ALL', 'MEETING_INFO_SELECT')")
+    public ResponseEntity getUnitMeeting(@PathVariable Long id) {
+        return new ResponseEntity(meetingInfoService.getMeeting(id), HttpStatus.OK);
+    }
+
+    @Log("新增会议投票")
     @PostMapping(value = "/meetingVote")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @ApiOperation(value = "新增会议投票")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_INFO_ALL', 'MEETING_INFO_CREATE')")
     public ResponseEntity create(@Validated @RequestBody MeetingVote resources){
         if (resources.getId() != null) {
             throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");
@@ -47,9 +66,10 @@ public class MeetingVoteController {
         return new ResponseEntity(meetingVoteService.create(resources),HttpStatus.CREATED);
     }
 
-    @Log("修改MeetingVote")
+    @Log("修改会议投票")
     @PutMapping(value = "/meetingVote")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @ApiOperation(value = "修改会议投票")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_INFO_ALL', 'MEETING_INFO_EDIT')")
     public ResponseEntity update(@Validated @RequestBody MeetingVote resources){
         if (resources.getId() == null) {
             throw new BadRequestException(ENTITY_NAME +" ID Can not be empty");
@@ -58,9 +78,10 @@ public class MeetingVoteController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @Log("删除MeetingVote")
+    @Log("删除会议投票")
     @DeleteMapping(value = "/meetingVote/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @ApiOperation(value = "删除会议投票")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_INFO_ALL', 'MEETING_INFO_DELETE')")
     public ResponseEntity delete(@PathVariable Long id){
         meetingVoteService.delete(id);
         return new ResponseEntity(HttpStatus.OK);

@@ -1,6 +1,5 @@
 package com.cqhc.modules.meeting.domain;
 
-import com.cqhc.modules.system.domain.Dept;
 import com.cqhc.modules.system.domain.Unit;
 import lombok.Data;
 import javax.persistence.*;
@@ -31,7 +30,7 @@ public class MeetingType implements Serializable {
     * */
     @NotNull
     @Column(name = "sort",nullable = false)
-    private Integer sort;
+    private short sort;
 
     /*
     * 名称

@@ -23,7 +23,7 @@ public class MeetingUserDTO implements Serializable {
             3-列席人员
             4-其他人员
      */
-    private Integer type;
+    private short type;
 
     private String address;
 

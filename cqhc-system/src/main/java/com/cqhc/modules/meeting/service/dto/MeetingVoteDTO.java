@@ -13,7 +13,7 @@ public class MeetingVoteDTO implements Serializable {
 
     private Long id;
 
-    private Long meetingId;
+    private MeetingInfoDTO meeting;
 
     private String title;
 
@@ -23,6 +23,8 @@ public class MeetingVoteDTO implements Serializable {
             2-满意度测评
      */
     private Integer type;
+
+    private short actualNumber;
 
     /**
      * 数据字典meeting_vote_status

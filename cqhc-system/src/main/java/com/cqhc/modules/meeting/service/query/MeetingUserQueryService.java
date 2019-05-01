@@ -69,9 +69,9 @@ public class MeetingUserQueryService {
 
             if(!ObjectUtils.isEmpty(meetingUser.getType())){
                 /**
-                * 模糊
+                * 精确
                 */
-                list.add(cb.like(root.get("type").as(String.class),"%"+meetingUser.getType()+"%"));
+                list.add(cb.equal(root.get("type").as(Short.class),meetingUser.getType()));
             }
             if(!ObjectUtils.isEmpty(meetingUser.getAddress())){
                 /**
