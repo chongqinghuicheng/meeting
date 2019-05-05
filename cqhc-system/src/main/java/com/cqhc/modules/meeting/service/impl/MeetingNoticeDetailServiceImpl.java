@@ -1,6 +1,7 @@
 package com.cqhc.modules.meeting.service.impl;
 
 import com.cqhc.modules.meeting.domain.MeetingNoticeDetail;
+import com.cqhc.modules.system.domain.User;
 import com.cqhc.utils.ValidationUtil;
 import com.cqhc.modules.meeting.repository.MeetingNoticeDetailRepository;
 import com.cqhc.modules.meeting.service.MeetingNoticeDetailService;
@@ -10,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
 * @author huicheng
@@ -56,4 +60,24 @@ public class MeetingNoticeDetailServiceImpl implements MeetingNoticeDetailServic
     public void delete(Long id) {
         meetingNoticeDetailRepository.deleteById(id);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteByNoticeId(Long id){
+        meetingNoticeDetailRepository.deleteByNoticeId(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public MeetingNoticeDetail getMeetingNoticeDetail(Long noticeId,Long userId){
+        return meetingNoticeDetailRepository.getMeetingNoticeDetail(noticeId, userId);
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<MeetingNoticeDetail> getMeetingNoticeDetails(Long noticeId){
+        return meetingNoticeDetailRepository.getMeetingNoticeDetails(noticeId);
+    }
+
 }

@@ -13,7 +13,7 @@ public class MeetingSummaryDTO implements Serializable {
 
     private Long id;
 
-    private Long meetingId;
+    private MeetingInfoDTO meeting;
 
     private String title;
 

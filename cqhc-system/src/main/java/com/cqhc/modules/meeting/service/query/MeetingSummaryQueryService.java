@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -42,7 +44,9 @@ public class MeetingSummaryQueryService {
      */
     @Cacheable(keyGenerator = "keyGenerator")
     public Object queryAll(MeetingSummaryDTO meetingSummary, Pageable pageable){
-        Page<MeetingSummary> page = meetingSummaryRepository.findAll(new Spec(meetingSummary),pageable);
+        // 按创建日期分页降序排序
+        Pageable pageableSort = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), new Sort(Sort.Direction.DESC,"createTime"));
+        Page<MeetingSummary> page = meetingSummaryRepository.findAll(new Spec(meetingSummary),pageableSort);
         return PageUtil.toPage(page.map(meetingSummaryMapper::toDto));
     }
 
@@ -51,7 +55,7 @@ public class MeetingSummaryQueryService {
     */
     @Cacheable(keyGenerator = "keyGenerator")
     public Object queryAll(MeetingSummaryDTO meetingSummary){
-        return meetingSummaryMapper.toDto(meetingSummaryRepository.findAll(new Spec(meetingSummary)));
+        return meetingSummaryMapper.toDto(meetingSummaryRepository.findAll(new Spec(meetingSummary), new Sort(Sort.Direction.DESC, "createTime")));
     }
 
     class Spec implements Specification<MeetingSummary> {

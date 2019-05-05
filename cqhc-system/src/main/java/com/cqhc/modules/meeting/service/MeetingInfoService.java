@@ -6,6 +6,8 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.List;
+
 /**
 * @author huicheng
 * @date 2019-04-24
@@ -20,6 +22,22 @@ public interface MeetingInfoService {
      */
     @Cacheable(key = "#p0")
     MeetingInfoDTO findById(Long id);
+
+    /**
+     * 查询所属会议
+     * @param id
+     * @return
+     */
+    @Cacheable(key = "#p0")
+    List<MeetingInfoDTO> getMeeting(Long id);
+
+    /**
+     * 获取本单位所有的会议
+     * @param id
+     * @return
+     */
+    @Cacheable(key = "#p0")
+    List<MeetingInfoDTO> getUnitMeeting(Long id);
 
     /**
      * create

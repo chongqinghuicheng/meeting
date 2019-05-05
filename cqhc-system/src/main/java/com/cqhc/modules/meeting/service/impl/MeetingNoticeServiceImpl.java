@@ -1,15 +1,26 @@
 package com.cqhc.modules.meeting.service.impl;
 
 import com.cqhc.modules.meeting.domain.MeetingNotice;
+import com.cqhc.modules.meeting.repository.MeetingNoticeDetailRepository;
 import com.cqhc.utils.ValidationUtil;
 import com.cqhc.modules.meeting.repository.MeetingNoticeRepository;
 import com.cqhc.modules.meeting.service.MeetingNoticeService;
 import com.cqhc.modules.meeting.service.dto.MeetingNoticeDTO;
 import com.cqhc.modules.meeting.service.mapper.MeetingNoticeMapper;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -25,6 +36,12 @@ public class MeetingNoticeServiceImpl implements MeetingNoticeService {
 
     @Autowired
     private MeetingNoticeMapper meetingNoticeMapper;
+
+    @Autowired
+    private MeetingNoticeDetailRepository meetingNoticeDetailRepository;
+
+    @Autowired
+    HttpServletRequest request;
 
     @Override
     public MeetingNoticeDTO findById(Long id) {
@@ -56,4 +73,24 @@ public class MeetingNoticeServiceImpl implements MeetingNoticeService {
     public void delete(Long id) {
         meetingNoticeRepository.deleteById(id);
     }
+
+    //查找自己创建的通知信息
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<MeetingNotice> findByUserId(Long userId){
+        return meetingNoticeRepository.findByUserId(userId);
+    }
+
+    //查找自己接收到的通知信息
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<MeetingNotice> findByNoticeIds(Long userId){
+        //通过明细表查询接收到的通知ID
+        List<Long> meetingNoticeIds=meetingNoticeDetailRepository.findMeetingNoticeId(userId);
+        //通过接收到的通知ID集合查询出通知集合
+        List<MeetingNotice> meetingNoticeList=meetingNoticeRepository.findAllById(meetingNoticeIds);
+
+        return meetingNoticeList;
+    }
+
 }

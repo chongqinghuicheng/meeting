@@ -34,7 +34,7 @@ public class MeetingVoteDetailController {
     @GetMapping(value = "/meetingVoteDetail")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity getMeetingVoteDetails(MeetingVoteDetailDTO resources, Pageable pageable){
-        return new ResponseEntity(meetingVoteDetailQueryService.queryAll(resources,pageable),HttpStatus.OK);
+        return new ResponseEntity(meetingVoteDetailQueryService.queryAll(resources),HttpStatus.OK);
     }
 
     @Log("新增MeetingVoteDetail")

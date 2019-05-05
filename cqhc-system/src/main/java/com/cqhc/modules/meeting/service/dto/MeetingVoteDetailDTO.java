@@ -31,7 +31,7 @@ public class MeetingVoteDetailDTO implements Serializable {
             1-满意
      
      */
-    private Integer status;
+    private short status;
 
     private Timestamp createTime;
 }

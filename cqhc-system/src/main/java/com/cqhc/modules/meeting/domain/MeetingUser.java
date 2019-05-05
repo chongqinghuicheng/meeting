@@ -32,7 +32,7 @@ public class MeetingUser implements Serializable {
             4-其他人员
      */
     @Column(name = "type",nullable = false)
-    private Integer type;
+    private short type;
 
     @Column(name = "address")
     private String address;

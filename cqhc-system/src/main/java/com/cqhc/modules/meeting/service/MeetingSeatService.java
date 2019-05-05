@@ -6,6 +6,8 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.List;
+
 /**
 * @author huicheng
 * @date 2019-04-25
@@ -22,24 +24,17 @@ public interface MeetingSeatService {
     MeetingSeatDTO findById(Long id);
 
     /**
-     * create
+     * 生成座次
      * @param resources
      * @return
      */
     @CacheEvict(allEntries = true)
-    MeetingSeatDTO create(MeetingSeat resources);
+    List<MeetingSeatDTO> create(MeetingSeat resources);
 
     /**
-     * update
+     * 设置座次人员
      * @param resources
      */
     @CacheEvict(allEntries = true)
-    void update(MeetingSeat resources);
-
-    /**
-     * delete
-     * @param id
-     */
-    @CacheEvict(allEntries = true)
-    void delete(Long id);
+    void setPerson(MeetingSeat resources);
 }

@@ -101,7 +101,9 @@ public class UserController {
             // 若无交集，则代表无数据权限
             if(result.size() == 0){
                 return new ResponseEntity(PageUtil.toPage(null,0),HttpStatus.OK);
-            } else return new ResponseEntity(userQueryService.queryAll(userDTO,result,pageable),HttpStatus.OK);
+            } else {
+                return new ResponseEntity(userQueryService.queryAll(userDTO,result,pageable),HttpStatus.OK);
+            }
         // 否则取并集
         } else {
             result.addAll(deptSet);

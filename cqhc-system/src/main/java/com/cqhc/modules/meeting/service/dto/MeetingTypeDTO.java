@@ -13,7 +13,7 @@ public class MeetingTypeDTO implements Serializable {
 
     private Long id;
 
-    private Integer sort;
+    private short sort;
 
     private String name;
 

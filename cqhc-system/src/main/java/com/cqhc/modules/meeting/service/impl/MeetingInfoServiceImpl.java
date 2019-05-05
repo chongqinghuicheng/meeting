@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,6 +33,18 @@ public class MeetingInfoServiceImpl implements MeetingInfoService {
         Optional<MeetingInfo> meetingInfo = meetingInfoRepository.findById(id);
         ValidationUtil.isNull(meetingInfo,"MeetingInfo","id",id);
         return meetingInfoMapper.toDto(meetingInfo.get());
+    }
+
+    @Override
+    public List<MeetingInfoDTO> getMeeting(Long id) {
+        // 获取本单位待进行或进行中的会议
+        return meetingInfoMapper.toDto(meetingInfoRepository.getMeeting(id));
+    }
+
+    @Override
+    public List<MeetingInfoDTO> getUnitMeeting(Long id) {
+        // 获取本单位下的所有会议
+        return meetingInfoMapper.toDto(meetingInfoRepository.getUnitMeeting(id));
     }
 
     @Override
