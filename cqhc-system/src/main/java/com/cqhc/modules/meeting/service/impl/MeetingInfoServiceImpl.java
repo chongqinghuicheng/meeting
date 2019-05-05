@@ -53,9 +53,9 @@ public class MeetingInfoServiceImpl implements MeetingInfoService {
     }
 
     @Override
-    public List<MeetingUserDTO> getMeetingUser(MeetingInfoDTO resources) {
+    public List<MeetingUserDTO> getMeetingUser(Long id) {
         // 根据所选会议自动填充参与人列表
-        return meetingUserMapper.toDto(meetingUserRepository.getMeetingUser(resources.getId()));
+        return meetingUserMapper.toDto(meetingUserRepository.getMeetingUser(id));
     }
 
     @Override

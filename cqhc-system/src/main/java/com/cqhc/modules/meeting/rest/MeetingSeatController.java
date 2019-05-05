@@ -7,6 +7,8 @@ import com.cqhc.modules.meeting.service.MeetingSeatService;
 import com.cqhc.modules.meeting.service.dto.MeetingSeatDTO;
 import com.cqhc.modules.meeting.service.query.MeetingSeatQueryService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,9 @@ public class MeetingSeatController {
     @Log("查询座次")
     @GetMapping(value = "/meetingSeat")
     @ApiOperation(value = "查询座次")
+    @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "类型", required = true, dataType = "MeetingType"),
+            @ApiImplicitParam(name = "rows", value = "行号", required = true, dataType = "short"),
+            @ApiImplicitParam(name = "columns", value = "列号", required = true, dataType = "short")})
     @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_SEAT_ALL', 'MEETING_SEAT_SELECT')")
     public ResponseEntity getMeetingSeats(MeetingSeatDTO resources, Pageable pageable){
         return new ResponseEntity(meetingSeatQueryService.queryAll(resources,pageable),HttpStatus.OK);
@@ -44,6 +49,9 @@ public class MeetingSeatController {
     @Log("生成会议座次")
     @PostMapping(value = "/meetingSeat")
     @ApiOperation(value = "生成会议座次")
+    @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "类型", required = true, dataType = "MeetingType"),
+            @ApiImplicitParam(name = "rows", value = "行号", required = true, dataType = "short"),
+            @ApiImplicitParam(name = "columns", value = "列号", required = true, dataType = "short")})
     @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_SEAT_ALL', 'MEETING_SEAT_CREATE')")
     public ResponseEntity create(@Validated @RequestBody MeetingSeat resources){
         if (resources.getId() != null) {
@@ -55,6 +63,9 @@ public class MeetingSeatController {
     @Log("设置座次人员")
     @PutMapping(value = "/meetingSeat")
     @ApiOperation(value = "设置座次人员")
+    @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "类型", required = true, dataType = "MeetingType"),
+            @ApiImplicitParam(name = "rows", value = "行号", required = true, dataType = "short"),
+            @ApiImplicitParam(name = "columns", value = "列号", required = true, dataType = "short")})
     @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_SEAT_ALL', 'MEETING_SEAT_CREATE')")
     public ResponseEntity setPerson(@Validated @RequestBody MeetingSeat resources){
         if (resources.getId() == null) {

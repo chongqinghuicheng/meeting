@@ -1,8 +1,6 @@
 package com.cqhc.modules.meeting.service;
 
-import com.cqhc.modules.meeting.domain.MeetingInfo;
 import com.cqhc.modules.meeting.domain.MeetingVote;
-import com.cqhc.modules.meeting.service.dto.MeetingInfoDTO;
 import com.cqhc.modules.meeting.service.dto.MeetingVoteDTO;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -23,13 +21,13 @@ public interface MeetingVoteService {
     @Cacheable(key = "#p0")
     MeetingVoteDTO findById(Long id);
 
-    /**
-     * 全屏投影
-     * @param id
-     * @return
-     */
-    @Cacheable(key = "#p0")
-    MeetingVoteDTO projection(Long id);
+    // /**
+    //  * 全屏投影
+    //  * @param id
+    //  * @return
+    //  */
+    // @Cacheable(key = "#p0")
+    // MeetingVoteDTO projection(Long id);
 
     /**
      * create

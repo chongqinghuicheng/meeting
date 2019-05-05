@@ -40,7 +40,7 @@ public interface MeetingInfoService {
      * @return
      */
     @Cacheable(key = "#p0")
-    List<MeetingUserDTO> getMeetingUser(MeetingInfoDTO resources);
+    List<MeetingUserDTO> getMeetingUser(Long id);
 
     /**
      * 获取本单位所有的会议

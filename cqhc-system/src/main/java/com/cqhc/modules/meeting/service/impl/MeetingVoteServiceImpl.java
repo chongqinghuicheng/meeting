@@ -41,9 +41,6 @@ public class MeetingVoteServiceImpl implements MeetingVoteService {
     @Autowired
     private MeetingVoteDetailRepository meetingVoteDetailRepository;
 
-    @Autowired
-    private MeetingInfoRepository meetingInfoRepository;
-
     @Override
     public MeetingVoteDTO findById(Long id) {
         Optional<MeetingVote> meetingVote = meetingVoteRepository.findById(id);
@@ -51,31 +48,31 @@ public class MeetingVoteServiceImpl implements MeetingVoteService {
         return meetingVoteMapper.toDto(meetingVote.get());
     }
 
-    @Override
-    public MeetingVoteDTO projection(Long id) {
-        MeetingVote meetingVote = new MeetingVote();
-        // 查询未按的人数
-        Long unselected = meetingInfoRepository.unselected(id);
-        meetingVote.setUnselected(unselected);
-        // 查询赞成的人数
-        Long approve = meetingInfoRepository.approve(id);
-        meetingVote.setApprove(approve);
-        // 查询反对的人数
-        Long oppose = meetingInfoRepository.oppose(id);
-        meetingVote.setOppose(oppose);
-        // 查询弃权的人数
-        Long waiver = meetingInfoRepository.waiver(id);
-        meetingVote.setWaiver(waiver);
-
-        // 查询投票人数
-        Long sum = approve + oppose + waiver;
-
-        // 若实到人数与投票人数相等时，自动改变状态为“2-已结束”
-        if (meetingVoteRepository.getActualNumber(id) == sum) {
-            meetingVoteRepository.updateStatus(id);
-        }
-        return meetingVoteMapper.toDto(meetingVote);
-    }
+    // @Override
+    // public MeetingVoteDTO projection(Long id) {
+    //     MeetingVote meetingVote = new MeetingVote();
+    //     // 查询未按的人数
+    //     Long unselected = meetingInfoRepository.unselected(id);
+    //     meetingVote.setUnselected(unselected);
+    //     // 查询赞成的人数
+    //     Long approve = meetingInfoRepository.approve(id);
+    //     meetingVote.setApprove(approve);
+    //     // 查询反对的人数
+    //     Long oppose = meetingInfoRepository.oppose(id);
+    //     meetingVote.setOppose(oppose);
+    //     // 查询弃权的人数
+    //     Long waiver = meetingInfoRepository.waiver(id);
+    //     meetingVote.setWaiver(waiver);
+    //
+    //     // 查询投票人数
+    //     Long sum = approve + oppose + waiver;
+    //
+    //     // 若实到人数与投票人数相等时，自动改变状态为“2-已结束”
+    //     if (meetingVoteRepository.getActualNumber(id) == sum) {
+    //         meetingVoteRepository.updateStatus(id);
+    //     }
+    //     return meetingVoteMapper.toDto(meetingVote);
+    // }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
