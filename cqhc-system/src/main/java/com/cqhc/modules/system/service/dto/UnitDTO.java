@@ -1,6 +1,7 @@
 package com.cqhc.modules.system.service.dto;
 
 import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -45,9 +46,9 @@ public class UnitDTO implements Serializable {
             9-其他
             
      */
-    private Integer version;
+    private short version;
 
-    private Integer terminalNum;
+    private short terminalNum;
 
     /**
      * 数据字典dept_status

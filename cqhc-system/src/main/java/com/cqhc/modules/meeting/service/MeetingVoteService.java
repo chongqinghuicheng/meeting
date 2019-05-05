@@ -1,6 +1,8 @@
 package com.cqhc.modules.meeting.service;
 
+import com.cqhc.modules.meeting.domain.MeetingInfo;
 import com.cqhc.modules.meeting.domain.MeetingVote;
+import com.cqhc.modules.meeting.service.dto.MeetingInfoDTO;
 import com.cqhc.modules.meeting.service.dto.MeetingVoteDTO;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -20,6 +22,14 @@ public interface MeetingVoteService {
      */
     @Cacheable(key = "#p0")
     MeetingVoteDTO findById(Long id);
+
+    /**
+     * 全屏投影
+     * @param id
+     * @return
+     */
+    @Cacheable(key = "#p0")
+    MeetingVoteDTO projection(Long id);
 
     /**
      * create
@@ -42,4 +52,16 @@ public interface MeetingVoteService {
      */
     @CacheEvict(allEntries = true)
     void delete(Long id);
+
+    /**
+     * 点击左剪头改变状态
+     * @param resources
+     */
+    void updateLeftStatus(MeetingVote resources);
+
+    /**
+     * 点击右箭头修改状态
+     * @param resources
+     */
+    void updateRightStatus(MeetingVote resources);
 }

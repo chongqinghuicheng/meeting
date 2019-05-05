@@ -57,6 +57,14 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     /**
      * 查询用户是否为系统初始化
+     * @param id
+     * @return
+     */
+    @Query(value = "select COUNT(*) from user where unit_id = ?1",nativeQuery = true)
+    Long getByUnitId(Long id);
+
+    /**
+     * 查询用户是否为系统初始化
      *
      * @param id
      * @return

@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -33,27 +36,60 @@ public class MeetingSeatServiceImpl implements MeetingSeatService {
         return meetingSeatMapper.toDto(meetingSeat.get());
     }
 
+    /**
+     * 生成MeetingSeat
+     * @param resources
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public MeetingSeatDTO create(MeetingSeat resources) {
-        return meetingSeatMapper.toDto(meetingSeatRepository.save(resources));
+    public List<MeetingSeatDTO> create(MeetingSeat resources) {
+        // 删除以前的数据
+        meetingSeatRepository.deleteAll();
+
+        List<MeetingSeatDTO> listMeetingSeatDto = new ArrayList<>();
+        // 需要生成的列数
+        short columns = resources.getRows();
+        // 总共要生成的数量
+        int sum = resources.getRows() * resources.getColumns();
+        // 初始化行数
+        short row = 1;
+        // 初始化列数
+        short column = 1;
+        // 生成座次
+        for (int i = 0; i < sum; i++) {
+            MeetingSeat meetingSeat = new MeetingSeat();
+            meetingSeat.setType(resources.getType());
+            meetingSeat.setRows(row);
+            meetingSeat.setColumns(column);
+            MeetingSeatDTO meetingSeatDTO = meetingSeatMapper.toDto(meetingSeatRepository.save(meetingSeat));
+
+            listMeetingSeatDto.add(meetingSeatDTO);
+            // 列数加1
+            column++;
+            // 当列数大于等于需要生成的列数时把行数加1，列数变为1
+            if (column >= columns) {
+                row++;
+                column = 1;
+            }
+        }
+        return listMeetingSeatDto;
     }
 
+    /**
+     * 设置座次人员
+     * @param resources
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(MeetingSeat resources) {
+    public void setPerson(MeetingSeat resources) {
+        // 获取该会议座次
         Optional<MeetingSeat> optionalMeetingSeat = meetingSeatRepository.findById(resources.getId());
         ValidationUtil.isNull( optionalMeetingSeat,"MeetingSeat","id",resources.getId());
 
+        // 得到实体
         MeetingSeat meetingSeat = optionalMeetingSeat.get();
-        // 此处需自己修改
         resources.setId(meetingSeat.getId());
         meetingSeatRepository.save(resources);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id) {
-        meetingSeatRepository.deleteById(id);
     }
 }

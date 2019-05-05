@@ -6,6 +6,8 @@ import com.cqhc.modules.meeting.domain.MeetingSeat;
 import com.cqhc.modules.meeting.service.MeetingSeatService;
 import com.cqhc.modules.meeting.service.dto.MeetingSeatDTO;
 import com.cqhc.modules.meeting.service.query.MeetingSeatQueryService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 */
 @RestController
 @RequestMapping("api")
+@Api(value = "/会议座次管理", description = "会议座次管理")
 public class MeetingSeatController {
 
     @Autowired
@@ -30,16 +33,18 @@ public class MeetingSeatController {
 
     private static final String ENTITY_NAME = "meetingSeat";
 
-    @Log("查询MeetingSeat")
+    @Log("查询座次")
     @GetMapping(value = "/meetingSeat")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @ApiOperation(value = "查询座次")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_SEAT_ALL', 'MEETING_SEAT_SELECT')")
     public ResponseEntity getMeetingSeats(MeetingSeatDTO resources, Pageable pageable){
         return new ResponseEntity(meetingSeatQueryService.queryAll(resources,pageable),HttpStatus.OK);
     }
 
-    @Log("新增MeetingSeat")
+    @Log("生成会议座次")
     @PostMapping(value = "/meetingSeat")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @ApiOperation(value = "生成会议座次")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_SEAT_ALL', 'MEETING_SEAT_CREATE')")
     public ResponseEntity create(@Validated @RequestBody MeetingSeat resources){
         if (resources.getId() != null) {
             throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");
@@ -47,22 +52,15 @@ public class MeetingSeatController {
         return new ResponseEntity(meetingSeatService.create(resources),HttpStatus.CREATED);
     }
 
-    @Log("修改MeetingSeat")
+    @Log("设置座次人员")
     @PutMapping(value = "/meetingSeat")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity update(@Validated @RequestBody MeetingSeat resources){
+    @ApiOperation(value = "设置座次人员")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_SEAT_ALL', 'MEETING_SEAT_CREATE')")
+    public ResponseEntity setPerson(@Validated @RequestBody MeetingSeat resources){
         if (resources.getId() == null) {
             throw new BadRequestException(ENTITY_NAME +" ID Can not be empty");
         }
-        meetingSeatService.update(resources);
+        meetingSeatService.setPerson(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    @Log("删除MeetingSeat")
-    @DeleteMapping(value = "/meetingSeat/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity delete(@PathVariable Long id){
-        meetingSeatService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
     }
 }

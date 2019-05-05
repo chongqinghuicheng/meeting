@@ -22,7 +22,7 @@ public interface UnitService {
     UnitDTO findById(Long id);
 
     /**
-     * create
+     * 新增单位
      * @param resources
      * @return
      */
@@ -30,14 +30,14 @@ public interface UnitService {
     UnitDTO create(Unit resources);
 
     /**
-     * update
+     * 修改单位
      * @param resources
      */
     @CacheEvict(allEntries = true)
     void update(Unit resources);
 
     /**
-     * delete
+     * 删除单位
      * @param id
      */
     @CacheEvict(allEntries = true)

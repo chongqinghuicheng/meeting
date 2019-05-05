@@ -1,14 +1,11 @@
 package com.cqhc.modules.system.service.impl;
 
-import com.alibaba.druid.sql.dialect.oracle.ast.expr.OracleSizeExpr;
 import com.cqhc.exception.BadRequestException;
 import com.cqhc.exception.EntityExistException;
-import com.cqhc.modules.meeting.domain.MeetingType;
 import com.cqhc.modules.system.domain.ParameterConfig;
 import com.cqhc.modules.system.domain.Unit;
 import com.cqhc.modules.system.repository.UnitRepository;
 import com.cqhc.modules.system.service.UnitService;
-import com.cqhc.modules.system.service.dto.UnitDTO;
 import com.cqhc.modules.system.service.mapper.UnitMapper;
 import com.cqhc.utils.ValidationUtil;
 import com.cqhc.modules.system.repository.ParameterConfigRepository;
@@ -110,6 +107,7 @@ public class ParameterConfigServiceImpl implements ParameterConfigService {
     }
 
     //新增单位时，把我们这边所有的单位级参数全再新增参数
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void  batch(Long unitId){
         //获取所有需复制的参数

@@ -1,6 +1,8 @@
 package com.cqhc.modules.meeting.service.dto;
 
+import com.cqhc.modules.system.service.dto.UserDTO;
 import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -12,7 +14,7 @@ public class MeetingSeatDTO implements Serializable {
 
     private Long id;
 
-    private Long typeId;
+    private MeetingInfoDTO meeting;
 
     /**
      * 可以为空，有可能是直接某个会议类型下
@@ -21,7 +23,7 @@ public class MeetingSeatDTO implements Serializable {
 
     private Long userId;
 
-    private Integer rows;
+    private short rows;
 
-    private Integer columns;
+    private short columns;
 }
