@@ -7,6 +7,7 @@ import com.cqhc.modules.system.repository.UserRepository;
 import com.cqhc.modules.system.service.UserService;
 import com.cqhc.modules.system.service.dto.UserDTO;
 import com.cqhc.modules.system.service.mapper.UserMapper;
+import com.cqhc.utils.EncryptUtils;
 import com.cqhc.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,8 +50,13 @@ public class UserServiceImpl implements UserService {
             throw new EntityExistException(User.class,"email",resources.getEmail());
         }
 
+        // 密码md5加密
+        String password = EncryptUtils.encryptPassword(resources.getPassword());
+        resources.setPassword(password);
         // 默认密码 123456，此密码是加密后的字符
-        resources.setPassword("e10adc3949ba59abbe56e057f20f883e");
+        if(resources.getPassword()==""){
+            resources.setPassword("e10adc3949ba59abbe56e057f20f883e");
+        }
         resources.setAvatar("https://aurora-1255840532.cos.ap-chengdu.myqcloud.com/8918a306ea314404835a9196585c4b75.jpeg");
         return userMapper.toDto(userRepository.save(resources));
     }

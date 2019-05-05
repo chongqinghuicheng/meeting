@@ -1,17 +1,16 @@
 package com.cqhc.modules.system.service.impl;
 
-import com.cqhc.modules.system.repository.JobRepository;
-import com.cqhc.modules.system.service.mapper.JobMapper;
 import com.cqhc.modules.system.domain.Job;
-import com.cqhc.utils.ValidationUtil;
 import com.cqhc.modules.system.repository.JobRepository;
 import com.cqhc.modules.system.service.JobService;
 import com.cqhc.modules.system.service.dto.JobDTO;
 import com.cqhc.modules.system.service.mapper.JobMapper;
+import com.cqhc.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 /**
