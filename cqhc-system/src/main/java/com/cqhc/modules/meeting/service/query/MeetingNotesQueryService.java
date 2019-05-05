@@ -10,7 +10,6 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -54,7 +53,7 @@ public class MeetingNotesQueryService {
     */
     @Cacheable(keyGenerator = "keyGenerator")
     public Object queryAll(MeetingNotesDTO meetingNotes){
-        return meetingNotesMapper.toDto(meetingNotesRepository.findAll(new Spec(meetingNotes),new Sort(Sort.Direction.DESC,"createTime")));
+        return meetingNotesMapper.toDto(meetingNotesRepository.findAll(new Spec(meetingNotes)));
     }
 
     class Spec implements Specification<MeetingNotes> {

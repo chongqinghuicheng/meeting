@@ -61,7 +61,6 @@ public class MeetingTypeServiceImpl implements MeetingTypeService {
 //        if(meetingTypeRepository.findByNameAndUnit(meetingType.getId(),meetingType.getName(),meetingType.getUnit()) ==null){
 //            throw new EntityExistException(MeetingType.class,"name",resources.getName()); //报已存在异常
 //        }
-
         if(meetingType1 != null&&!meetingType1.getId().equals(meetingType.getId())){
             throw new EntityExistException(MeetingType.class,"name",resources.getName()); //报已存在异常
         }

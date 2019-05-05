@@ -4,8 +4,12 @@ import com.cqhc.aop.log.Log;
 import com.cqhc.exception.BadRequestException;
 import com.cqhc.modules.meeting.domain.MeetingInfo;
 import com.cqhc.modules.meeting.domain.MeetingVote;
+import com.cqhc.modules.meeting.domain.MeetingVoteDetail;
+import com.cqhc.modules.meeting.repository.MeetingInfoRepository;
 import com.cqhc.modules.meeting.service.MeetingInfoService;
+import com.cqhc.modules.meeting.service.MeetingVoteDetailService;
 import com.cqhc.modules.meeting.service.MeetingVoteService;
+import com.cqhc.modules.meeting.service.dto.MeetingInfoDTO;
 import com.cqhc.modules.meeting.service.dto.MeetingVoteDTO;
 import com.cqhc.modules.meeting.service.query.MeetingVoteQueryService;
 import io.swagger.annotations.ApiOperation;
@@ -49,10 +53,32 @@ public class MeetingVoteController {
      * @param id
      * @return
      */
-    @GetMapping(value = "/meetingVote/{id}")
+    @GetMapping(value = "/meetingVote/getMeeting/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','MEETING_VOTE_ALL', 'MEETING_INFO_SELECT')")
     public ResponseEntity getUnitMeeting(@PathVariable Long id) {
         return new ResponseEntity(meetingInfoService.getMeeting(id), HttpStatus.OK);
+    }
+
+    /**
+     * 根据所选会议自动填充参与人列表
+     * @param resources
+     * @return
+     */
+    @GetMapping(value = "/meetingVote/getMeetingUser")
+    @PreAuthorize("hasAnyRole('ADMIN','MEETING_VOTE_ALL', 'MEETING_INFO_SELECT')")
+    public ResponseEntity getMeetingUser(MeetingInfoDTO resources) {
+        return new ResponseEntity(meetingInfoService.getMeetingUser(resources), HttpStatus.OK);
+    }
+
+    /**
+     * 全屏投影
+     * @param resources
+     * @return
+     */
+    @GetMapping(value = "/meetingVote/projection/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','MEETING_VOTE_ALL', 'MEETING_INFO_SELECT', 'MEETING_INFO_ALL', 'MEETING_INFO_EDIT')")
+    public ResponseEntity projection(@PathVariable Long id) {
+        return new ResponseEntity(meetingVoteService.projection(id), HttpStatus.OK);
     }
 
     @Log("新增会议投票")
@@ -75,6 +101,36 @@ public class MeetingVoteController {
             throw new BadRequestException(ENTITY_NAME +" ID Can not be empty");
         }
         meetingVoteService.update(resources);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * 点击左剪头改变状态
+     * @param resources
+     * @return
+     */
+    @PutMapping(value = "/meetingVote/updateLeftStatus")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_INFO_ALL', 'MEETING_INFO_EDIT')")
+    public ResponseEntity updateLeftStatus(@Validated @RequestBody MeetingVote resources){
+        if (resources.getId() == null) {
+            throw new BadRequestException(ENTITY_NAME +" ID Can not be empty");
+        }
+        meetingVoteService.updateLeftStatus(resources);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * 点击右箭头修改状态
+     * @param resources
+     * @return
+     */
+    @PutMapping(value = "/meetingVote/updateRightStatus")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_INFO_ALL', 'MEETING_INFO_EDIT')")
+    public ResponseEntity updateRightStatus(@Validated @RequestBody MeetingVote resources){
+        if (resources.getId() == null) {
+            throw new BadRequestException(ENTITY_NAME +" ID Can not be empty");
+        }
+        meetingVoteService.updateRightStatus(resources);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

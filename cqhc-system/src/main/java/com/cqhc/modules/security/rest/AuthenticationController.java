@@ -97,25 +97,25 @@ public class AuthenticationController {
             redisTemplate.opsForValue().set(key,1);
             throw new AccountExpiredException("对不起，密码错误，你还有4次机会！");
         }else {
-            int errCount = Integer.parseInt(loginCount);
+            int count = Integer.parseInt(loginCount);
             // 错误达到5次
-            if(errCount >= ElAdminConstant.LOGIN_FAIL_COUNT){
+            if(count >= ElAdminConstant.LOGIN_FAIL_COUNT){
                 redisTemplate.expire(key,3,TimeUnit.MINUTES);
                 throw new AccountExpiredException("对不起，密码错误，没有机会了，请等3分钟再试！");
             }
             // 自增失败次数
             redisTemplate.opsForValue().increment(key,1);
-            throw new AccountExpiredException("对不起，密码错误，你还有" + (4 - errCount) + "次机会！");
+            throw new AccountExpiredException("对不起，密码错误，你还有" + (4 - count) + "次机会！");
         }
 
         // 验证是否为默认密码
         long userId = jwtUser.getId();
-        long defCount = authenticationRepository.findByIdAndlastPass(userId);
+        long count = authenticationRepository.findByIdAndlastPass(userId);
 
         // 生成令牌
         final String token = jwtTokenUtil.generateToken(jwtUser);
 
-        if(defCount > 0)
+        if(count > 0)
         {
             return ResponseEntity.ok(new AuthenticationInfo(token,jwtUser));
         }else{

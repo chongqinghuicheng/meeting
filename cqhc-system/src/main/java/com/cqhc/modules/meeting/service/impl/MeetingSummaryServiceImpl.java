@@ -56,6 +56,14 @@ public class MeetingSummaryServiceImpl implements MeetingSummaryService {
 
         // 获取纪要表实体
         MeetingSummary meetingSummary = optionalMeetingSummary.get();
+
+        // 获取附件
+
+        // 内容和附件，必填其中之一
+        if(resources.getContent() == null){
+            throw new IndexOutOfBoundsException("内容和附件，必填其中之一");
+        }
+
         resources.setId(meetingSummary.getId());
         meetingSummaryRepository.save(resources);
     }

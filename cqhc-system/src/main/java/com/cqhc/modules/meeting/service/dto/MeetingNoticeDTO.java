@@ -1,10 +1,8 @@
 package com.cqhc.modules.meeting.service.dto;
 
-import com.cqhc.modules.system.domain.User;
 import lombok.Data;
 import java.sql.Timestamp;
 import java.io.Serializable;
-import java.util.List;
 
 /**
 * @author huicheng
@@ -25,7 +23,7 @@ public class MeetingNoticeDTO implements Serializable {
 
     private Timestamp endTime;
 
-    private List<User> users;
+    private Long userId;
 
     private Timestamp createTime;
 }

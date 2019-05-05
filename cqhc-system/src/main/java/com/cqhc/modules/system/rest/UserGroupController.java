@@ -36,7 +36,7 @@ public class UserGroupController {
     @Log("查询人员分组")
     @GetMapping(value = "/userGroup")
     @ApiOperation(value = "人员分组查询")
-    @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_SELECT')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity getUserGroups(Pageable pageable){
         int pageNumber = pageable.getPageNumber();
         int pageSize = pageable.getPageSize();
@@ -47,7 +47,7 @@ public class UserGroupController {
     @Log("新增人员分组")
     @PostMapping(value = "/userGroup")
     @ApiOperation(value = "人员分组新增")
-    @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_CREATE')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity create(@Validated @RequestBody UserGroup resources){
         if (resources.getId() != null) {
             throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");
@@ -58,7 +58,7 @@ public class UserGroupController {
     @Log("修改人员分组")
     @PutMapping(value = "/userGroup")
     @ApiOperation(value = "人员分组修改")
-    @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_EDIT')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity update(@Validated @RequestBody UserGroup resources){
         if (resources.getId() == null) {
             throw new BadRequestException(ENTITY_NAME +" ID Can not be empty");
@@ -70,7 +70,7 @@ public class UserGroupController {
     @Log("删除人员分组")
     @DeleteMapping(value = "/userGroup/{id}")
     @ApiOperation(value = "人员分组删除")
-    @PreAuthorize("hasAnyRole('ADMIN','USER_ALL','USER_DELETE')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @ApiImplicitParam(name = "id", value = "人员分组id", required = true, dataType = "Long")
     public ResponseEntity delete(@PathVariable Long id){
         userGroupService.delete(id);

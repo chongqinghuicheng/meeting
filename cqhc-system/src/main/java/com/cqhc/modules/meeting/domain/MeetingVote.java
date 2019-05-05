@@ -1,10 +1,14 @@
 package com.cqhc.modules.meeting.domain;
 
+import com.cqhc.modules.system.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 /**
 * @author huicheng
@@ -60,4 +64,19 @@ public class MeetingVote implements Serializable {
     @ApiModelProperty(notes = "描述", required = true)
     @Column(name = "remark")
     private String remark;
+
+    @Transient
+    private Set<MeetingUser> meetingUsers;
+
+    @Transient
+    private Long unselected;
+
+    @Transient
+    private Long approve;
+
+    @Transient
+    private Long oppose;
+
+    @Transient
+    private Long waiver;
 }

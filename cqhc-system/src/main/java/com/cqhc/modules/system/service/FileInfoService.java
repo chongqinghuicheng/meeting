@@ -5,7 +5,6 @@ import com.cqhc.modules.system.service.dto.FileInfoDTO;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
 * @author huicheng
@@ -13,15 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 */
 @CacheConfig(cacheNames = "fileInfo")
 public interface FileInfoService {
-
-    /**
-     * 上传文件
-     *
-     * @param file
-     * @return
-     */
-    @CacheEvict(allEntries = true)
-    FileInfo upload(MultipartFile file);
 
     /**
      * findById

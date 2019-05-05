@@ -28,7 +28,7 @@ public interface MeetingInfoRepository extends JpaRepository<MeetingInfo, Long>,
      * @param id
      * @return
      */
-    @Query(value = "SELECT mi.* FROM unit u, meeting_vote mv, meeting_info mi WHERE u.id = mi.unit_id AND mi.id = mv.meeting_id AND mv.`status` != 0 AND u.id = ?1 GROUP BY mi.id",nativeQuery = true)
+    @Query(value = "SELECT mi.* FROM unit u, meeting_info mi WHERE u.id = mi.unit_id AND mi.`status` != 0 AND u.id = ?1",nativeQuery = true)
     List<MeetingInfo> getMeeting(Long id);
 
     /**
@@ -36,14 +36,35 @@ public interface MeetingInfoRepository extends JpaRepository<MeetingInfo, Long>,
      * @param id
      * @return
      */
-    @Query(value = "SELECT mi.* FROM meeting_info mi, unit u WHERE u.id = mi.unit_id AND u.id = ?1",nativeQuery = true)
+    @Query(value = "SELECT mi.* FROM unit u, meeting_info mi WHERE u.id = mi.unit_id AND u.id = ?1",nativeQuery = true)
     List<MeetingInfo> getUnitMeeting(Long id);
 
     /**
-     * 附件会议纪要
+     * 查询未按的人数
+     * @return
+     */
+    @Query(value = "SELECT COUNT(*) FROM meeting_info mi, meeting_vote mv, meeting_vote_detail mvd WHERE mi.id =  mv.meeting_id AND mv.id = mvd.vote_id AND mvd.`status` = 0 AND mi.id = ?1",nativeQuery = true)
+    Long unselected(Long id);
+
+    /**
+     * 查询赞成的人数
+     * @param id
+     */
+    @Query(value = "SELECT COUNT(*) FROM meeting_info mi, meeting_vote mv, meeting_vote_detail mvd WHERE mi.id =  mv.meeting_id AND mv.id = mvd.vote_id AND mvd.`status` = 1 AND mi.id = ?1",nativeQuery = true)
+    Long approve(Long id);
+
+    /**
+     * 查询反对的人数
+     * @param id
+     */
+    @Query(value = "SELECT COUNT(*) FROM meeting_info mi, meeting_vote mv, meeting_vote_detail mvd WHERE mi.id =  mv.meeting_id AND mv.id = mvd.vote_id AND mvd.`status` = 2 AND mi.id = ?1",nativeQuery = true)
+    Long oppose(Long id);
+
+    /**
+     * 查询弃权的人数
      * @param id
      * @return
      */
-    // @Query(value = "",nativeQuery = true)
-    // MeetingSummary getFileInfo(Long id);
+    @Query(value = "SELECT COUNT(*) FROM meeting_info mi, meeting_vote mv, meeting_vote_detail mvd WHERE mi.id =  mv.meeting_id AND mv.id = mvd.vote_id AND mvd.`status` = 3 AND mi.id = ?1",nativeQuery = true)
+    Long waiver(Long id);
 }

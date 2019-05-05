@@ -1,5 +1,6 @@
 package com.cqhc.modules.meeting.domain;
 
+import com.cqhc.modules.system.domain.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;

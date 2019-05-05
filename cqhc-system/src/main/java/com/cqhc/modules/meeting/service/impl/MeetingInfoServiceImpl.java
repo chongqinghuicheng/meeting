@@ -1,6 +1,11 @@
 package com.cqhc.modules.meeting.service.impl;
 
 import com.cqhc.modules.meeting.domain.MeetingInfo;
+import com.cqhc.modules.meeting.domain.MeetingUser;
+import com.cqhc.modules.meeting.repository.MeetingUserRepository;
+import com.cqhc.modules.meeting.service.dto.MeetingUserDTO;
+import com.cqhc.modules.meeting.service.dto.MeetingVoteDTO;
+import com.cqhc.modules.meeting.service.mapper.MeetingUserMapper;
 import com.cqhc.utils.ValidationUtil;
 import com.cqhc.modules.meeting.repository.MeetingInfoRepository;
 import com.cqhc.modules.meeting.service.MeetingInfoService;
@@ -28,6 +33,12 @@ public class MeetingInfoServiceImpl implements MeetingInfoService {
     @Autowired
     private MeetingInfoMapper meetingInfoMapper;
 
+    @Autowired
+    private MeetingUserRepository meetingUserRepository;
+
+    @Autowired
+    private MeetingUserMapper meetingUserMapper;
+
     @Override
     public MeetingInfoDTO findById(Long id) {
         Optional<MeetingInfo> meetingInfo = meetingInfoRepository.findById(id);
@@ -39,6 +50,12 @@ public class MeetingInfoServiceImpl implements MeetingInfoService {
     public List<MeetingInfoDTO> getMeeting(Long id) {
         // 获取本单位待进行或进行中的会议
         return meetingInfoMapper.toDto(meetingInfoRepository.getMeeting(id));
+    }
+
+    @Override
+    public List<MeetingUserDTO> getMeetingUser(MeetingInfoDTO resources) {
+        // 根据所选会议自动填充参与人列表
+        return meetingUserMapper.toDto(meetingUserRepository.getMeetingUser(resources.getId()));
     }
 
     @Override

@@ -43,6 +43,17 @@ public class MeetingSummaryController {
         return new ResponseEntity(meetingSummaryQueryService.queryAll(resources,pageable),HttpStatus.OK);
     }
 
+    /**
+     * 获取本单位所有的会议
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/meetingSummary/getUnitMeeting/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_SUMMARY_ALL', 'MEETING_SUMMARY_SELECT')")
+    public ResponseEntity getByUnitMeetingId(@PathVariable Long id){
+        return new ResponseEntity(meetingInfoService.getUnitMeeting(id),HttpStatus.OK);
+    }
+
     @Log("新增会议纪要")
     @PostMapping(value = "/meetingSummary")
     @ApiOperation(value = "新增会议纪要")
@@ -52,17 +63,6 @@ public class MeetingSummaryController {
             throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");
         }
         return new ResponseEntity(meetingSummaryService.create(resources),HttpStatus.CREATED);
-    }
-
-    /**
-     * 获取本单位所有的会议
-     * @param id
-     * @return
-     */
-    @GetMapping(value = "/meetingSummary/meeting/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MEETING_SUMMARY_ALL', 'MEETING_SUMMARY_SELECT')")
-    public ResponseEntity getByUnitMeetingId(@PathVariable Long id){
-        return new ResponseEntity(meetingInfoService.getUnitMeeting(id),HttpStatus.OK);
     }
 
     @Log("修改会议纪要")
