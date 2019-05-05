@@ -28,7 +28,7 @@ public class MeetingNoticeDetail implements Serializable {
     @NotNull
     @ApiModelProperty(name="notice_id",notes="通知的基本信息",required = true)
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY) //对面通知删除，这边该通知下的明细也自动删除
-    @Column(name = "notice_id",nullable = false)
+    @JoinColumn(name = "notice_id",nullable = false)
     private MeetingNotice meetingNotice;
 
     @NotNull

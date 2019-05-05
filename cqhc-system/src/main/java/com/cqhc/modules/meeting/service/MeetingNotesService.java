@@ -6,6 +6,8 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.List;
+
 /**
 * @author huicheng
 * @date 2019-04-30
@@ -42,4 +44,8 @@ public interface MeetingNotesService {
      */
     @CacheEvict(allEntries = true)
     void delete(Long id);
+
+    //查询自己创建的笔记
+    @CacheEvict(allEntries = true)
+    List<MeetingNotes> getMeetingNotes(Long id);
 }

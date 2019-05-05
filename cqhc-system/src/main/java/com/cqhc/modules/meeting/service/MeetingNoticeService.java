@@ -51,8 +51,9 @@ public interface MeetingNoticeService {
     @CacheEvict(allEntries = true)
     List<MeetingNotice> findByUserId(Long userId);
 
+    //获取自己接收到的通知列表
     @CacheEvict(allEntries = true)
-    List<MeetingNotice> findByNoticeId(Long userId);
+    List<MeetingNotice> findByNoticeIds(Long userId);
 
 
 }

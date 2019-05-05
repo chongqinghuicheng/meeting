@@ -52,11 +52,11 @@ public interface MeetingNoticeDetailService {
     @CacheEvict(allEntries = true)
     void deleteByNoticeId(Long id);
 
-    //通过通知ID和用户ID查询明细表
-    @CacheEvict(allEntries = true)
-    MeetingNoticeDetail getMeetingNoticeDetail(Long noticeId,Long userId);
+    //通过通知ID和用户ID查询明细表.查看按钮要用
+      @CacheEvict(allEntries = true)
+      MeetingNoticeDetail getMeetingNoticeDetail(Long noticeId,Long userId);
 
-    //根据单位ID查询出该单位下所有用户
+    //通过通知ID查询出该通知明细信息.
     @CacheEvict(allEntries = true)
-    Set<User> findByUnitId(Long id);
+    List<MeetingNoticeDetail> getMeetingNoticeDetails(Long noticeId);
 }

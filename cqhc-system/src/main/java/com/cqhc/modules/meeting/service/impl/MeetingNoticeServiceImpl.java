@@ -84,7 +84,7 @@ public class MeetingNoticeServiceImpl implements MeetingNoticeService {
     //查找自己接收到的通知信息
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<MeetingNotice> findByNoticeId(Long userId){
+    public List<MeetingNotice> findByNoticeIds(Long userId){
         //通过明细表查询接收到的通知ID
         List<Long> meetingNoticeIds=meetingNoticeDetailRepository.findMeetingNoticeId(userId);
         //通过接收到的通知ID集合查询出通知集合

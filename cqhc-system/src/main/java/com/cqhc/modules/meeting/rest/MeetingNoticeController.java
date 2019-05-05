@@ -3,19 +3,18 @@ package com.cqhc.modules.meeting.rest;
 import com.cqhc.aop.log.Log;
 import com.cqhc.exception.BadRequestException;
 import com.cqhc.modules.meeting.domain.MeetingNotice;
+import com.cqhc.modules.meeting.domain.MeetingNoticeDetail;
 import com.cqhc.modules.meeting.service.MeetingNoticeDetailService;
 import com.cqhc.modules.meeting.service.MeetingNoticeService;
 import com.cqhc.modules.meeting.service.dto.MeetingNoticeDTO;
+import com.cqhc.modules.meeting.service.dto.MeetingNoticeDetailDTO;
 import com.cqhc.modules.meeting.service.query.MeetingNoticeQueryService;
 import com.cqhc.modules.security.rest.AuthenticationController;
 import com.cqhc.modules.security.service.JwtPermissionService;
 import com.cqhc.modules.system.domain.User;
 import com.cqhc.modules.system.service.UserService;
 import com.cqhc.utils.SecurityContextHolder;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.apache.catalina.connector.Request;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +35,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.security.auth.message.callback.PrivateKeyCallback;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -83,7 +83,7 @@ public class MeetingNoticeController {
         }else if (jwtPermissionService.getPermission("MEETING_NOTICE_EDIT")){
             //返回自己创建的和接收到的通知列表
             List<MeetingNotice> list1=meetingNoticeService.findByUserId(user.getId());
-            List<MeetingNotice> list2=meetingNoticeService.findByNoticeId(user.getId());
+            List<MeetingNotice> list2=meetingNoticeService.findByNoticeIds(user.getId());
             list1.addAll(list2); //合并两个集合
             return new ResponseEntity(list1,HttpStatus.OK);
         }else {
@@ -105,12 +105,12 @@ public class MeetingNoticeController {
             throw new BadRequestException("A new "+ ENTITY_NAME +" cannot already have an ID");
         }
 
-
         return new ResponseEntity(meetingNoticeService.create(resources),HttpStatus.CREATED);
     }
 
     @Log("修改MeetingNotice")
     @PutMapping(value = "/meetingNotice")
+    @ApiOperation(value = "修改通知")//给接口文档的方法备注
     @PreAuthorize("hasAnyRole('ADMIN','MEETING_NOTICE_ALL','MEETING_NOTICE_EDIT','MEETING_NOTICE_EDIT_ALL')")
     public ResponseEntity update(@Validated @RequestBody MeetingNotice resources){
         if (resources.getId() == null) {
@@ -124,10 +124,37 @@ public class MeetingNoticeController {
     }
 
     @Log("删除MeetingNotice")
+    @ApiOperation(value = "删除通知")
     @DeleteMapping(value = "/meetingNotice/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','MEETING_NOTICE_ALL','MEETING_NOTICE_DELETE')")
     public ResponseEntity delete(@PathVariable Long id){
         meetingNoticeService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @Log("查看MeetingNotice")
+    @ApiOperation(value = "查看按钮")
+    @GetMapping(value = "/meetingNoticeDetail")
+    @PreAuthorize("hasAnyRole('ADMIN','MEETING_NOTICE_SELECT','MEETING_NOTICE_ALL')") //有普通权限
+    public ResponseEntity getMeetingNoticeDetail(Long noticeId,Long userId){
+        //获取明细信息
+        MeetingNoticeDetail meetingNoticeDetail=meetingNoticeDetailService.getMeetingNoticeDetail(noticeId, userId);
+        //判断用户是否第一次进入查看
+        if(meetingNoticeDetail.getStatus() == 0){ //未查看
+            meetingNoticeDetail.setStatus(1); //设置为已查看
+            meetingNoticeDetail.setLockTime(new Timestamp(System.currentTimeMillis()));//查看时间为当前系统时间
+        }
+
+        //查看通知基本信息
+    return new ResponseEntity(meetingNoticeService.findById(noticeId),HttpStatus.OK);
+    }
+
+    @Log("监控MeetingNotice")
+    @ApiOperation(value = "监控按钮")
+    @GetMapping(value = "/meetingNoticeDetails")
+    @PreAuthorize("hasAnyRole('ADMIN','MEETING_NOTICE_ALL')") //有管理员权限
+    public ResponseEntity getMeetingNoticeDetails(Long noticeId){
+        //监控所有通知明细信息
+        return new ResponseEntity(meetingNoticeDetailService.getMeetingNoticeDetails(noticeId),HttpStatus.OK);
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -70,9 +72,12 @@ public class MeetingNoticeDetailServiceImpl implements MeetingNoticeDetailServic
     public MeetingNoticeDetail getMeetingNoticeDetail(Long noticeId,Long userId){
         return meetingNoticeDetailRepository.getMeetingNoticeDetail(noticeId, userId);
     }
+
+
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Set<User> findByUnitId(Long id){
-        return meetingNoticeDetailRepository.findByUnitId(id);
+    public List<MeetingNoticeDetail> getMeetingNoticeDetails(Long noticeId){
+        return meetingNoticeDetailRepository.getMeetingNoticeDetails(noticeId);
     }
+
 }
