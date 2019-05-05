@@ -1,6 +1,7 @@
 package com.cqhc.modules.meeting.domain;
 
 import com.cqhc.modules.system.domain.Unit;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ public class MeetingType implements Serializable {
     * 序号
     * */
     @NotNull
+    @ApiModelProperty(name="sort",notes="序号")
     @Column(name = "sort",nullable = false)
     private short sort;
 
@@ -36,6 +38,7 @@ public class MeetingType implements Serializable {
     * 名称
     * */
     @NotBlank
+    @ApiModelProperty(name="name",notes="名称")
     @Column(name = "name",nullable = false)
     private String name;
 
@@ -43,6 +46,7 @@ public class MeetingType implements Serializable {
     * 单位ID
     * */
     @ManyToOne  //多对一关系
+    @ApiModelProperty(name="unit_id",notes="单位")
     @JoinColumn(name = "unit_id") //外键注解.
     private Unit unit;
 
@@ -59,6 +63,7 @@ public class MeetingType implements Serializable {
     * 描述
     * */
     @Column(name = "remark")
+    @ApiModelProperty(name="remark",notes="描述")
     private String remark;
 
 }
